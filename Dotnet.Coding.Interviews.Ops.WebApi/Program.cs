@@ -24,6 +24,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Processing System (OPS) API", Version = "v1" });
 });
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // Initialize the database with some sample data
