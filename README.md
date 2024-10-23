@@ -14,8 +14,8 @@ The primary goal of the Order Processing System is to provide a clear and functi
 
 ### 1. **Models**
 
-- **Order**: Represents an order placed by a customer, including properties like `Id`, `ProductId`, `Quantity`, and `IsPaid`.
-- **Inventory**: Represents product inventory, including `ProductId` and `Stock` to track available quantities.
+- **Order**: Represents an order placed by a customer, including properties like `Id`, `InventoryId`, `Quantity`, and `IsPaid`.
+- **Inventory**: Represents product inventory, including `Stock` to track available quantities.
 - **Payment**: Represents a payment transaction related to an order, including `PaymentId`, `OrderId`, `Amount`, and `IsSuccessful`.
 
 ### 2. **Services**
@@ -43,4 +43,4 @@ The primary goal of the Order Processing System is to provide a clear and functi
 ### Prerequisites
 
 - [.NET SDK](https://dotnet.microsoft.com/download) (version 6.0 or later)
-- A code editor (e.g., Visual Studio, Visual Studio Code)
+- A code editor (e.g. [Visual Studio Code](https://code.visualstudio.com/))
