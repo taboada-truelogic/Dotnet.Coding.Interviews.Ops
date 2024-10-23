@@ -41,15 +41,15 @@ namespace Dotnet.Coding.Interviews.Ops.Controllers
 
         // POST: api/orders
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder(int productId, int quantity, decimal paymentAmount)
+        public async Task<ActionResult<Order>> CreateOrder(int inventoryId, int quantity, decimal paymentAmount)
         {
             // Check inventory before creating order
-            if (!await _inventoryService.CheckStockAsync(productId))
+            if (!await _inventoryService.CheckStockAsync(inventoryId))
             {
                 return BadRequest("Insufficient stock for the requested product.");
             }
 
-            var createdOrder = await _orderService.CreateOrderAsync(productId, quantity);
+            var createdOrder = await _orderService.CreateOrderAsync(inventoryId, quantity);
 
             // Process payment after creating the order
             var paymentSuccessful = await _paymentService.ProcessPaymentAsync(createdOrder.Id, paymentAmount);
@@ -59,7 +59,7 @@ namespace Dotnet.Coding.Interviews.Ops.Controllers
             }
 
             // Reduce stock after successful payment
-            await _inventoryService.ReduceStockAsync(productId, quantity);
+            await _inventoryService.ReduceStockAsync(inventoryId, quantity);
 
             return CreatedAtAction(nameof(GetOrder), new { id = createdOrder.Id }, createdOrder);
         }

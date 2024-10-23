@@ -4,7 +4,7 @@ namespace Dotnet.Coding.Interviews.Ops.Services;
 
 public interface IOrderService
 {
-    Task<Order> CreateOrderAsync(int productId, int quantity);
+    Task<Order> CreateOrderAsync(int inventoryId, int quantity);
     Task<Order> GetOrderByIdAsync(int orderId);
     Task<IEnumerable<Order>> GetAllOrdersAsync();
     Task<Order> UpdateOrderAsync(Order order);

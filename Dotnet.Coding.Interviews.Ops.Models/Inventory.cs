@@ -2,6 +2,6 @@
 
 public class Inventory
 {
-    public int Id { get; set; } // Changed from ProductId to Id
+    public int Id { get; set; }
     public int Stock { get; set; }
 }
