@@ -1,36 +1,47 @@
 ﻿using Dotnet.Coding.Interviews.Ops.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dotnet.Coding.Interviews.Ops.Data;
 
 public class OrderRepository : IOrderRepository
 {
-    public Task CreateOrderAsync(Order order)
+    private readonly OpsDbContext _dbContext;
+
+    public OrderRepository(OpsDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task DeleteOrderAsync(int id)
+    public async Task CreateOrderAsync(Order order)
     {
-        throw new NotImplementedException();
+        await _dbContext.Orders.AddAsync(order);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<Order>> GetAllOrdersAsync()
+    public async Task DeleteOrderAsync(int id)
     {
-        throw new NotImplementedException();
+        var order = await _dbContext.Orders.FindAsync(id);
+        if (order != null)
+        {
+            _dbContext.Orders.Remove(order);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
-    public Task<Order> GetOrderByIdAsync(int id)
+    public async Task<IEnumerable<Order>> GetAllOrdersAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Orders.ToListAsync();
     }
 
-    public Task<IEnumerable<Order>> GetOrdersByCustomerIdAsync(int customerId)
-    {
-        throw new NotImplementedException();
-    }
+public async Task<Order> GetOrderByIdAsync(int id)
+{
+    var order = await _dbContext.Orders.FindAsync(id) ?? throw new KeyNotFoundException($"Order with id {id} not found.");
+        return order;
+}
 
-    public Task UpdateOrderAsync(Order order)
+    public async Task UpdateOrderAsync(Order order)
     {
-        throw new NotImplementedException();
+        _dbContext.Orders.Update(order);
+        await _dbContext.SaveChangesAsync();
     }
 }
