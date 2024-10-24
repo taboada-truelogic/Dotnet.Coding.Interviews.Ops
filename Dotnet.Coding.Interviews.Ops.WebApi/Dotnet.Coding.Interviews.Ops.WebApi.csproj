@@ -14,6 +14,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Dotnet.Coding.Interviews.Ops.Services\Dotnet.Coding.Interviews.Ops.Services.csproj" />
     <ProjectReference Include="..\Dotnet.Coding.Interviews.Ops.Models\Dotnet.Coding.Interviews.Ops.Models.csproj" />
+    <ProjectReference Include="..\Dotnet.Coding.Interviews.Ops.Controllers\Dotnet.Coding.Interviews.Ops.Controllers.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
 
 </Project>

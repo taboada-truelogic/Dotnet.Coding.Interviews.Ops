@@ -1,11 +1,19 @@
-// Dotnet.Coding.Interviews.Ops.Api/Program.cs
-
+using System.Reflection;
 using Dotnet.Coding.Interviews.Ops.Data;
 using Dotnet.Coding.Interviews.Ops.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+/* -----------------------------------------------------------------------------
+ * Services
+ * -------------------------------------------------------------------------- */
+
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<OpsDbContext>(options =>
+    options.UseSqlite("DataSource=:memory:")); // Using in-memory SQLite for simplicity
 
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -15,16 +23,13 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
-builder.Services.AddDbContext<OpsDbContext>(options =>
-    options.UseSqlite("DataSource=:memory:")); // Using in-memory SQLite for simplicity
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Processing System (OPS) API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Order Processing System (OPS) API", Version = "v1" });
+    var filePath = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, filePath));
 });
-
-builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -39,16 +44,16 @@ using (var scope = app.Services.CreateScope())
     // dbContext.SaveChanges();
 }
 
-// Configure the HTTP request pipeline
+/* -----------------------------------------------------------------------------
+ * Middlewares
+ * https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware
+ * -------------------------------------------------------------------------- */
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger(); // Enable Swagger UI in development
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Order Processing API V1");
-        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root
-    });
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
@@ -56,7 +61,6 @@ else
     app.UseHsts();
 }
 
-app.UseRouting();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
