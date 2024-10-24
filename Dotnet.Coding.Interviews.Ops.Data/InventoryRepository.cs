@@ -18,16 +18,6 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteInventoryAsync(int id)
-        {
-            var inventory = await _context.Inventories.FindAsync(id);
-            if (inventory != null)
-            {
-                _context.Inventories.Remove(inventory);
-                await _context.SaveChangesAsync();
-            }
-        }
-
         public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
         {
             return await _context.Inventories.ToListAsync();
@@ -43,6 +33,16 @@ namespace Dotnet.Coding.Interviews.Ops.Data
         {
             _context.Inventories.Update(inventory);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteInventoryAsync(int id)
+        {
+            var inventory = await _context.Inventories.FindAsync(id);
+            if (inventory != null)
+            {
+                _context.Inventories.Remove(inventory);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

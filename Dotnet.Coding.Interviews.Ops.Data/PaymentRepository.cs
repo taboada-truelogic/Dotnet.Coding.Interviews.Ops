@@ -18,16 +18,6 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeletePaymentAsync(int id)
-        {
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment != null)
-            {
-                _context.Payments.Remove(payment);
-                await _context.SaveChangesAsync();
-            }
-        }
-
         public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
         {
             return await _context.Payments.ToListAsync();
@@ -43,6 +33,16 @@ namespace Dotnet.Coding.Interviews.Ops.Data
         {
             _context.Payments.Update(payment);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeletePaymentAsync(int id)
+        {
+            var payment = await _context.Payments.FindAsync(id);
+            if (payment != null)
+            {
+                _context.Payments.Remove(payment);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

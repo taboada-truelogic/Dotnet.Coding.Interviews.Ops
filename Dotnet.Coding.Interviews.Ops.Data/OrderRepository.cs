@@ -18,16 +18,6 @@ public class OrderRepository : IOrderRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteOrderAsync(int id)
-    {
-        var order = await _dbContext.Orders.FindAsync(id);
-        if (order != null)
-        {
-            _dbContext.Orders.Remove(order);
-            await _dbContext.SaveChangesAsync();
-        }
-    }
-
     public async Task<IEnumerable<Order>> GetAllOrdersAsync()
     {
         return await _dbContext.Orders.ToListAsync();
@@ -43,5 +33,15 @@ public async Task<Order> GetOrderByIdAsync(int id)
     {
         _dbContext.Orders.Update(order);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteOrderAsync(int id)
+    {
+        var order = await _dbContext.Orders.FindAsync(id);
+        if (order != null)
+        {
+            _dbContext.Orders.Remove(order);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
