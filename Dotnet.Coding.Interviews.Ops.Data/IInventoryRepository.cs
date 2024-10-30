@@ -4,9 +4,9 @@ namespace Dotnet.Coding.Interviews.Ops.Data;
 
 public interface IInventoryRepository
 {
-    Task CreateInventoryAsync(Inventory inventory);
-    Task<IEnumerable<Inventory>> GetAllInventoriesAsync();
-    Task<Inventory> GetInventoryByIdAsync(int id);
+    Task AddInventoryAsync(Inventory inventory);
+    Task<IEnumerable<Inventory>> ListInventoriesAsync();
+    Task<Inventory> FindInventoryByIdAsync(int id);
     Task UpdateInventoryAsync(Inventory inventory);
-    Task DeleteInventoryAsync(int id);
+    Task RemoveInventoryAsync(int id);
 }

@@ -4,9 +4,9 @@ namespace Dotnet.Coding.Interviews.Ops.Data;
 
 public interface IPaymentRepository
 {
-    Task CreatePaymentAsync(Payment payment);
-    Task<Payment> GetPaymentByIdAsync(int id);
-    Task<IEnumerable<Payment>> GetAllPaymentsAsync();
+    Task AddPaymentAsync(Payment payment);
+    Task<IEnumerable<Payment>> ListPaymentsAsync();
+    Task<Payment> FindPaymentByIdAsync(int id);
     Task UpdatePaymentAsync(Payment payment);
-    Task DeletePaymentAsync(int id);
+    Task RemovePaymentAsync(int id);
 }

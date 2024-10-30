@@ -12,18 +12,18 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             _context = context;
         }
 
-        public async Task CreateInventoryAsync(Inventory inventory)
+        public async Task AddInventoryAsync(Inventory inventory)
         {
             await _context.Inventories.AddAsync(inventory);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
+        public async Task<IEnumerable<Inventory>> ListInventoriesAsync()
         {
             return await _context.Inventories.ToListAsync();
         }
 
-        public async Task<Inventory> GetInventoryByIdAsync(int id)
+        public async Task<Inventory> FindInventoryByIdAsync(int id)
         {
             var inventory = await _context.Inventories.FindAsync(id) ?? throw new KeyNotFoundException($"Inventory with id {id} not found.");
             return inventory;
@@ -35,7 +35,7 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteInventoryAsync(int id)
+        public async Task RemoveInventoryAsync(int id)
         {
             var inventory = await _context.Inventories.FindAsync(id);
             if (inventory != null)

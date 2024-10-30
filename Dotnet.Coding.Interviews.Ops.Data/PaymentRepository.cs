@@ -12,18 +12,18 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             _context = context;
         }
 
-        public async Task CreatePaymentAsync(Payment payment)
+        public async Task AddPaymentAsync(Payment payment)
         {
             await _context.Payments.AddAsync(payment);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
+        public async Task<IEnumerable<Payment>> ListPaymentsAsync()
         {
             return await _context.Payments.ToListAsync();
         }
 
-        public async Task<Payment> GetPaymentByIdAsync(int id)
+        public async Task<Payment> FindPaymentByIdAsync(int id)
         {
             var payment = await _context.Payments.FindAsync(id) ?? throw new KeyNotFoundException($"Payment with id {id} not found.");
             return payment;
@@ -35,7 +35,7 @@ namespace Dotnet.Coding.Interviews.Ops.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeletePaymentAsync(int id)
+        public async Task RemovePaymentAsync(int id)
         {
             var payment = await _context.Payments.FindAsync(id);
             if (payment != null)

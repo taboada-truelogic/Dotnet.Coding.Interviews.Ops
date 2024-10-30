@@ -4,9 +4,9 @@ namespace Dotnet.Coding.Interviews.Ops.Data;
 
 public interface IOrderRepository
 {
-    Task CreateOrderAsync(Order order);
-    Task<IEnumerable<Order>> GetAllOrdersAsync();
-    Task<Order> GetOrderByIdAsync(int id);
+    Task AddOrderAsync(Order order);
+    Task<IEnumerable<Order>> ListOrdersAsync();
+    Task<Order> FindOrderByIdAsync(int id);
     Task UpdateOrderAsync(Order order);
-    Task DeleteOrderAsync(int id);
+    Task RemoveOrderAsync(int id);
 }

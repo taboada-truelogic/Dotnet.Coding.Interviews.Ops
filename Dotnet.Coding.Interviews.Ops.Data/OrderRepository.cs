@@ -12,21 +12,21 @@ public class OrderRepository : IOrderRepository
         _dbContext = dbContext;
     }
 
-    public async Task CreateOrderAsync(Order order)
+    public async Task AddOrderAsync(Order order)
     {
         await _dbContext.Orders.AddAsync(order);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Order>> GetAllOrdersAsync()
+    public async Task<IEnumerable<Order>> ListOrdersAsync()
     {
         return await _dbContext.Orders.ToListAsync();
     }
 
-public async Task<Order> GetOrderByIdAsync(int id)
+public async Task<Order> FindOrderByIdAsync(int id)
 {
     var order = await _dbContext.Orders.FindAsync(id) ?? throw new KeyNotFoundException($"Order with id {id} not found.");
-        return order;
+    return order;
 }
 
     public async Task UpdateOrderAsync(Order order)
@@ -35,7 +35,7 @@ public async Task<Order> GetOrderByIdAsync(int id)
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteOrderAsync(int id)
+    public async Task RemoveOrderAsync(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);
         if (order != null)
