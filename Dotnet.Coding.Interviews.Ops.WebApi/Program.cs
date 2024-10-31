@@ -1,19 +1,28 @@
 using System.Reflection;
 using Dotnet.Coding.Interviews.Ops.Data;
+using Dotnet.Coding.Interviews.Ops.Models;
 using Dotnet.Coding.Interviews.Ops.Services;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 /* -----------------------------------------------------------------------------
+ * Data
+ * -------------------------------------------------------------------------- */
+
+var sqliteConnection = new SqliteConnection("DataSource=:memory:");
+sqliteConnection.Open();
+
+builder.Services.AddDbContext<OpsDbContext>(options =>
+    options.UseSqlite(sqliteConnection));
+
+/* -----------------------------------------------------------------------------
  * Services
  * -------------------------------------------------------------------------- */
 
 builder.Services.AddControllers();
-
-builder.Services.AddDbContext<OpsDbContext>(options =>
-    options.UseSqlite("DataSource=:memory:")); // Using in-memory SQLite for simplicity
 
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -33,20 +42,27 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Initialize the database with some sample data
+/* -----------------------------------------------------------------------------
+ * Data Seeding
+ * -------------------------------------------------------------------------- */
+
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<OpsDbContext>();
     dbContext.Database.EnsureCreated();
 
-    // Here, you can seed some initial data if needed
-    // e.g., dbContext.Orders.Add(new Order { ... });
-    // dbContext.SaveChanges();
+    if (!dbContext.Inventories.Any())
+    {
+        dbContext.Inventories.AddRange(
+            new Inventory { Id = 1, Stock = 999 },
+            new Inventory { Id = 2, Stock = 1337 }
+        );
+        dbContext.SaveChanges();
+    }
 }
 
 /* -----------------------------------------------------------------------------
  * Middlewares
- * https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware
  * -------------------------------------------------------------------------- */
 
 if (app.Environment.IsDevelopment())
@@ -64,3 +80,5 @@ else
 app.MapControllers();
 
 await app.RunAsync();
+
+sqliteConnection.Dispose();
